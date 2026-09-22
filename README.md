@@ -1,6 +1,6 @@
-# Harry Potter and the Sorcerer's Stone — Linux AppImage Build
+# Harry Potter and the Sorcerer's Stone (Philosopher's Stone in the UK) — Linux AppImage Build
 
-This project provides a launcher and build script for making a self-contained Linux AppImage from a legally owned copy of **Harry Potter and the Sorcerer's Stone**.
+This project provides a launcher and build script for making a self-contained Linux AppImage from a legally owned copy of **Harry Potter and the Sorcerer's Stone**, known as **Harry Potter and the Philosopher's Stone** in the UK and some other regions.
 
 This is an unofficial community project. It is not affiliated with Warner Bros., Electronic Arts, or the original developers.
 
