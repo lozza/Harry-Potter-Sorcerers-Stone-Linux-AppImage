@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="32" fill="#1b1630"/>
+  <path d="M45 45h166v166H45z" fill="none" stroke="#d9b45b" stroke-width="8"/>
+  <text x="128" y="151" text-anchor="middle" font-family="serif" font-size="88" font-weight="bold" fill="#d9b45b">HP</text>
+</svg>

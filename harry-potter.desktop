@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Harry Potter and the Sorcerer's Stone
+Comment=Harry Potter and the Sorcerer's Stone Linux AppImage
+Exec=AppRun
+Icon=hp
+Type=Application
+Categories=Game;
+Terminal=false

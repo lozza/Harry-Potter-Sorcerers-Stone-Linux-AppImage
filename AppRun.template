@@ -1,0 +1,173 @@
+#!/bin/sh
+set -eu
+
+APPDIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+DATA_DIR=${HP_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/harry-potter-sorcerers-stone}
+GAME_DIR="$DATA_DIR/game"
+PREFIX_DIR="$DATA_DIR/prefix"
+
+usage() {
+    cat <<'EOF'
+Harry Potter and the Sorcerer's Stone
+
+Usage: AppRun [profile]
+
+With no profile, the graphical settings chooser opens.
+
+Profiles:
+  --choose       Open the graphical settings chooser
+  --auto         Pick a suitable profile from the current display
+  --ultrawide    2560x1080 fullscreen
+  --1080p        1920x1080 fullscreen
+  --720p         1280x720 fullscreen
+  --deck         1280x800 fullscreen
+  --windowed     1280x720 windowed
+EOF
+}
+
+PROFILE=${HP_PROFILE:-ultrawide}
+SHOW_CHOOSER=0
+if [ "$#" -eq 0 ] && [ -z "${HP_PROFILE:-}" ]; then
+    SHOW_CHOOSER=1
+fi
+
+if [ "$#" -gt 0 ]; then
+    case "$1" in
+        --help|-h) usage; exit 0 ;;
+        --choose) SHOW_CHOOSER=1 ;;
+        --auto) PROFILE=auto ;;
+        --ultrawide|--1080p|--720p|--deck|--windowed) PROFILE=${1#--} ;;
+        *) printf 'Unknown option: %s\n\n' "$1" >&2; usage >&2; exit 2 ;;
+    esac
+fi
+
+if [ "$PROFILE" = auto ]; then
+    if [ "${SteamDeck:-}" = 1 ] || [ "${STEAM_DECK:-}" = 1 ]; then
+        PROFILE=deck
+    elif command -v xrandr >/dev/null 2>&1; then
+        DISPLAY_MODE=$(xrandr 2>/dev/null | awk '/ connected primary| connected / {for (i=1;i<=NF;i++) if ($i ~ /^[0-9]+x[0-9]+([+][0-9]+[+][0-9]+)?$/) {gsub(/[+].*/, "", $i); print $i; exit}}')
+        case "$DISPLAY_MODE" in
+            2560x1080|3440x1440|3840x1600|5120x2160) PROFILE=ultrawide ;;
+            1280x800|1920x1200|2560x1600) PROFILE=deck ;;
+            1280x720|1366x768|1600x900) PROFILE=720p ;;
+            *) PROFILE=1080p ;;
+        esac
+    else
+        PROFILE=1080p
+    fi
+fi
+
+WINDOW_WIDTH=1920
+WINDOW_HEIGHT=1080
+FULLSCREEN_WIDTH=1920
+FULLSCREEN_HEIGHT=1080
+FOV=106.26
+START_FULLSCREEN=True
+case "$PROFILE" in
+    ultrawide) WINDOW_WIDTH=2048; WINDOW_HEIGHT=1080; FULLSCREEN_WIDTH=2560; FULLSCREEN_HEIGHT=1080; FOV=121.28 ;;
+    1080p) : ;;
+    720p) WINDOW_WIDTH=1280; WINDOW_HEIGHT=720; FULLSCREEN_WIDTH=1280; FULLSCREEN_HEIGHT=720 ;;
+    deck) WINDOW_WIDTH=1280; WINDOW_HEIGHT=800; FULLSCREEN_WIDTH=1280; FULLSCREEN_HEIGHT=800; FOV=100.39 ;;
+    windowed) WINDOW_WIDTH=1280; WINDOW_HEIGHT=720; START_FULLSCREEN=False ;;
+    *) printf 'Invalid profile: %s\n' "$PROFILE" >&2; exit 2 ;;
+esac
+
+mkdir -p "$DATA_DIR"
+if [ ! -f "$GAME_DIR/System/HP.exe" ]; then
+    mkdir -p "$GAME_DIR"
+    cp -a "$APPDIR/game/." "$GAME_DIR/"
+fi
+if [ ! -f "$PREFIX_DIR/system.reg" ]; then
+    mkdir -p "$PREFIX_DIR"
+    cp -a "$APPDIR/prefix-template/." "$PREFIX_DIR/"
+fi
+
+# AppImages are commonly mounted read-only. Make the user's copy writable so
+# the game's settings screen and save system can work on every launch.
+chmod -R u+rwX "$GAME_DIR" "$PREFIX_DIR" 2>/dev/null || true
+
+export USER=steamuser
+export LOGNAME=steamuser
+export WINEUSERNAME=steamuser
+export WINEPREFIX="$PREFIX_DIR"
+export WINEARCH=win32
+export WINELOADER="$APPDIR/runner/bin/wine"
+export WINESERVER="$APPDIR/runner/bin/wineserver"
+export PATH="$APPDIR/runner/bin:$PATH"
+export LD_LIBRARY_PATH="$APPDIR/runtime32/pulseaudio:$APPDIR/runtime32:$APPDIR/runner/lib32:$APPDIR/runner/lib:$APPDIR/runner/lib32/wine/i386-unix${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export WINEDLLPATH="$APPDIR/runner/lib32/wine:$APPDIR/runner/lib32/wine/i386-unix${WINEDLLPATH:+:$WINEDLLPATH}"
+export FONTCONFIG_PATH="$APPDIR/runtime32/etc/fonts"
+export WINEDLLOVERRIDES=winemenubuilder=
+export WINEDEBUG="${WINEDEBUG:-fixme-all}"
+export WINE_LARGE_ADDRESS_AWARE=1
+export STAGING_SHARED_MEMORY=1
+export DISABLE_LFX=1
+export DXVK_STATE_CACHE_PATH="$DATA_DIR/dxvk-cache"
+export MESA_SHADER_CACHE_DIR="$DATA_DIR/mesa-cache"
+export __GL_SHADER_DISK_CACHE_PATH="$DATA_DIR/gl-cache"
+export VKD3D_SHADER_CACHE_PATH="$DATA_DIR/vkd3d-cache"
+mkdir -p "$DXVK_STATE_CACHE_PATH" "$MESA_SHADER_CACHE_DIR" "$__GL_SHADER_DISK_CACHE_PATH" "$VKD3D_SHADER_CACHE_PATH"
+
+patch_hp_ini() {
+    file=$1
+    tmp="$file.hp.tmp"
+    awk -v wx="$WINDOW_WIDTH" -v wy="$WINDOW_HEIGHT" \
+        -v fx="$FULLSCREEN_WIDTH" -v fy="$FULLSCREEN_HEIGHT" \
+        -v fs="$START_FULLSCREEN" '
+        { sub(/\r$/, "") }
+        /^[[]FirstRun[]]/ { section="FirstRun" }
+        /^[[]Engine.Engine[]]/ { section="Engine.Engine" }
+        /^[[]WinDrv.WindowsClient[]]/ { section="WinDrv.WindowsClient" }
+        section == "FirstRun" && /^Reconfig=/ { print "Reconfig=0"; next }
+        section == "Engine.Engine" && /^GameRenderDevice=/ { print "GameRenderDevice=D3DDrv.D3DRenderDevice"; next }
+        section == "WinDrv.WindowsClient" && /^WindowedViewportX=/ { print "WindowedViewportX=" wx; next }
+        section == "WinDrv.WindowsClient" && /^WindowedViewportY=/ { print "WindowedViewportY=" wy; next }
+        section == "WinDrv.WindowsClient" && /^FullscreenViewportX=/ { print "FullscreenViewportX=" fx; next }
+        section == "WinDrv.WindowsClient" && /^FullscreenViewportY=/ { print "FullscreenViewportY=" fy; next }
+        section == "WinDrv.WindowsClient" && /^StartupFullscreen=/ { print "StartupFullscreen=" fs; next }
+        { print }
+    ' "$file" > "$tmp"
+    mv "$tmp" "$file"
+}
+
+patch_user_ini() {
+    file=$1
+    tmp="$file.hp.tmp"
+    awk -v fov="$FOV" '
+        { sub(/\r$/, "") }
+        /^DesiredFOV=/ { print "DesiredFOV=" fov; next }
+        /^DefaultFOV=/ { print "DefaultFOV=" fov; next }
+        { print }
+    ' "$file" > "$tmp"
+    mv "$tmp" "$file"
+}
+
+if [ "$SHOW_CHOOSER" -eq 0 ]; then
+    while IFS= read -r ini; do patch_hp_ini "$ini"; done <<EOF
+$(find "$PREFIX_DIR/drive_c/users" -type f -name HP.ini -print 2>/dev/null || true)
+EOF
+    while IFS= read -r ini; do patch_user_ini "$ini"; done <<EOF
+$(find "$PREFIX_DIR/drive_c/users" -type f -name User.ini -print 2>/dev/null || true)
+EOF
+fi
+
+if [ "$SHOW_CHOOSER" -eq 1 ]; then
+    cd "$GAME_DIR/ResolutionTool"
+    "$WINELOADER" start /wait /unix "$GAME_DIR/ResolutionTool/HPSettings.exe" || true
+    # The chooser owns resolution/FOV values; only reassert the safe renderer.
+    while IFS= read -r ini; do
+        tmp="$ini.hp.tmp"
+        awk '{ sub(/\r$/, "") }
+            /^[[]FirstRun[]]/ { section="FirstRun" }
+            /^[[]Engine.Engine[]]/ { section="Engine.Engine" }
+            section == "FirstRun" && /^Reconfig=/ { print "Reconfig=0"; next }
+            section == "Engine.Engine" && /^GameRenderDevice=/ { print "GameRenderDevice=D3DDrv.D3DRenderDevice"; next }
+            { print }' "$ini" > "$tmp"
+        mv "$tmp" "$ini"
+    done <<EOF
+$(find "$PREFIX_DIR/drive_c/users" -type f -name HP.ini -print 2>/dev/null || true)
+EOF
+fi
+
+cd "$GAME_DIR/System"
+exec "$WINELOADER" start /wait /unix "$GAME_DIR/System/HP.exe"
