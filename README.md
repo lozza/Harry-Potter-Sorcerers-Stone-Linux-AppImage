@@ -1,4 +1,4 @@
-# Harry Potter and the Sorcerer's Stone — Linux AppImage builder
+# Harry Potter and the Sorcerer's Stone — Linux AppImage Build
 
 This repository contains the launcher and build recipe for creating a self-contained Linux AppImage from a legally owned copy of the game.
 
