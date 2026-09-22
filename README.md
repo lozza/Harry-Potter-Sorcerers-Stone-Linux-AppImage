@@ -121,22 +121,42 @@ chmod +x build-appimage.sh
 
 ## Step 8: build the AppImage
 
-Replace the path below with the location of your game folder:
+The easiest method is to run the builder without any arguments:
+
+```sh
+./build-appimage.sh
+```
+
+Choose your game folder when the file chooser opens. The builder then automatically finds your Bottles prefix, the Wine runner selected by that bottle, the 32-bit compatibility runtime, and `appimagetool`.
+
+If you are using a terminal without a graphical file chooser, run:
+
+```sh
+./build-appimage.sh --terminal
+```
+
+To check that the game folder and all build components are discoverable without copying anything, run:
+
+```sh
+./build-appimage.sh --check
+```
+
+You can also provide the game folder directly:
 
 ```sh
 ./build-appimage.sh "/path/to/Harry Potter and the Sorcerer's Stone"
 ```
 
-The script uses these default Bottles locations:
+The builder normally detects these Bottles locations automatically:
 
 ```text
 Bottle:  ~/.var/app/com.usebottles.bottles/data/bottles/bottles/Harry-Potter
 Runner:  ~/.var/app/com.usebottles.bottles/data/bottles/runners/soda-9.0-1
 ```
 
-Your paths may be different. A Wine prefix is the folder containing `system.reg`; a runner is the folder containing `bin/wine`.
+Your paths may be different. A Wine prefix is the folder containing `system.reg`; a runner is the folder containing `bin/wine`. You normally do not need to know these paths.
 
-To use different paths, provide them before the build command:
+If automatic detection fails, provide the paths manually:
 
 ```sh
 BOTTLE_DIR="/path/to/your/Harry-Potter-bottle" \
@@ -146,7 +166,7 @@ APPIMAGETOOL="/path/to/appimagetool" \
 ./build-appimage.sh "/path/to/your/game"
 ```
 
-The build can take a while and the finished AppImage is large because it contains the game, Wine, the prefix, and the runtime. The output is created in the current directory as:
+The build can take a while and the finished AppImage is large because it contains the game, Wine, the prefix, and the runtime. By default, the output is created beside `build-appimage.sh` as:
 
 ```text
 Harry-Potter-Sorcerers-Stone.AppImage
