@@ -1,8 +1,8 @@
-# Harry Potter and the Sorcerer's Stone (Philosopher's Stone in the UK) — Linux AppImage Build
+# Old Bottles-based builder (v1.0.0)
 
-> **Historical legacy instructions.** These steps describe the old Bottles-based script, not the ZIP-only private beta. Return to the [current status](../README.md) before installing anything.
+These are the original instructions. I'm keeping them here in case you still want to use the old script, but they are **not** for the newer ZIP-only builder. [Go back to the current project page](../README.md) if that's the one you're looking for.
 
-This project provides a launcher and build script for making a self-contained Linux AppImage from a legally owned copy of **Harry Potter and the Sorcerer's Stone**, known as **Harry Potter and the Philosopher's Stone** in the UK and some other regions.
+This older version starts with a game you have already installed and a working Bottles setup. It copies those into your own private AppImage. You don't need to do any of this for the new ZIP builder.
 
 This is an unofficial community project. It is not affiliated with Warner Bros., Electronic Arts, or the original developers.
 
