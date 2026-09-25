@@ -6,6 +6,12 @@
 - The packaged innoextract directory contains its own `license/` files for innoextract, Boost, libbz2, liblzma, libstdc++ and zlib. A filename/path scan of `private-reference/` found no LICENSE, COPYING, copyright or NOTICE files for the bundled runner/runtime. This does not prove those components are unlicensed; it means the current package lacks the attribution/source documentation needed to review redistribution.
 - The exact Soda runner and runtime copy still need an origin/version/hash-to-source mapping, per-component licence inventory, required notice texts and any corresponding-source offer. The Slint GUI distribution route also needs to be selected and followed. Do not label the private M30 binary redistributable or attach it to a public release until those checks are complete.
 
+## Licensing choice update
+
+The project owner has chosen GPLv3 for the builder source and Slint GUI. This
+supersedes the older "route pending" wording above; the copied Wine/runtime
+binary still lacks complete release clearance.
+
 ## Current source-only dependencies
 
 | Component | Version | Source | Licence/release status | Purpose |
