@@ -12,6 +12,13 @@ The project owner has chosen GPLv3 for the builder source and Slint GUI. This
 supersedes the older "route pending" wording above; the copied Wine/runtime
 binary still lacks complete release clearance.
 
+## M37 private-copy provenance findings
+
+- Entire M30 runner tree matches the installed Bottles Soda 9.0-1 tree (`diff -rq` exit 0); `bin/wine` SHA-256 `77ef3686bdee1d0ddc0dfff367ecf6875204473b1c5f14fb25f9e349725cc757`. See the [Soda release](https://github.com/bottlesdevs/wine/releases/tag/soda-9.0-1).
+- Entire M30 `runtime32` tree matches installed `org.freedesktop.Platform.Compat.i386//25.08` at Flathub commit `10c43710cbba7c67183615a06816d8b5a6ef4a079478c9484e9550a1d438241f` (`diff -rq` exit 0; 1,538 regular files, 403 symlinks).
+- Both native DXVK DLLs match Bottles `dxvk-2.7.1-6-fc848a4/x32`. The packaged `unzip` matches Fedora `unzip-6.0-69.fc44`; innoextract reports 1.9 and includes a licence directory.
+- These exact-origin matches do not clear the binary for publication. The M30 package still needs matching-source and component-notice mapping for Soda, the 32-bit Freedesktop SDK files, DXVK and all packaged tools. The related Freedesktop Platform installation has a licence collection, but its build commit differs from this Compat.i386 extension; coverage remains unverified.
+
 ## Current source-only dependencies
 
 | Component | Version | Source | Licence/release status | Purpose |
