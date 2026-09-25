@@ -1,30 +1,31 @@
-# Harry Potter and the Sorcerer's Stone — Linux AppImage builder
+# Harry Potter and the Sorcerer's Stone on Linux
 
-Unofficial community project; not affiliated with Warner Bros., Electronic Arts, or the original developers.
+I'm making a builder that turns a supported game ZIP into a Linux AppImage. Pick the ZIP, choose where the finished AppImage should go and what resolution you want, then press **Build**. That's the aim.
 
-## Current status
+This is an unofficial fan project. It's not connected to Warner Bros., EA or the original developers.
 
-The ZIP-only builder is a **private beta**, tested on Bazzite and Steam Deck. It is **not yet available as a public download or GitHub release**. The old `build-appimage.sh` in this repository is a separate, **legacy Bottles-based script**; it is not the new beta builder. Its original instructions are preserved in [Legacy Bottles builder](docs/LEGACY_BOTTLES_BUILDER.md).
+## Where things stand
 
-**Do not install Bottles for the new ZIP-only builder.** It accepts one supported local game ZIP and an output folder, extracts the installer without executing it, and creates a private game AppImage with its own Wine runner. The builder does not download a game, and this repository must not contain the ZIP, game files, saves, or a generated game AppImage.
+The new ZIP-based builder is still a **private beta**. I've tested the game it makes on Bazzite and Steam Deck, in Desktop and Gaming Modes, but I haven't put this builder up for public download yet.
 
-Two exact ZIP layouts have been verified: the original parent-folder MagiPack archive and a flat-layout archive containing the same installer files. The builder checks the complete archive profile, not just its filename. No download source for either archive is provided here.
+The [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) and `build-appimage.sh` are the **older Bottles-based version**. I'm keeping them here for anyone who wants that method, with the [old instructions clearly marked](docs/LEGACY_BOTTLES_BUILDER.md). **You don't need to install Bottles for the new ZIP builder.**
 
-## Verified private beta behavior
+## What the new builder does
 
-- A game built privately has launched on Bazzite and Steam Deck in Desktop and Gaming Modes with hardware Direct3D and audio. The Deck's movement controls need a per-game Steam Input layout that maps the left stick to arrow keys; the default WASD mapping does not move the character.
-- The builder offers a starting resolution, including 1280×720, 1280×800 Deck, 1080p, ultrawide, and windowed options. 1280×720 is the best-verified visual baseline.
-- Saves and settings are writable under `${XDG_DATA_HOME:-$HOME/.local/share}/hp1-magipack-private/`, not inside the AppImage or builder. Rebuilding the AppImage normally sees the same local saves.
-- The new private beta includes a **Back up saves & settings** button (automated tests pass; hands-on confirmation is pending). With the game closed, choose an output folder and use the button; it creates a new `HP1-backup-*` folder without overwriting live saves. It does not restore files automatically. Do not upload your backup.
+It accepts either of two ZIP layouts I've checked: one has a parent folder, and the other has the same installer files at the top level. It checks the whole ZIP, not just its name. It then extracts the installer files without running the installer and builds your own private game AppImage. You supply the ZIP yourself; I don't provide a game download, and the builder doesn't download or upload one.
 
-## Known beta issues and test scope
+So far, the private tests have shown:
 
-- At 1280×800, thin lines can appear on title/loading screens. Dumbledore's glasses can show a thick shadow at that resolution. These were observed on Bazzite and Steam Deck; they have not been reported as game-breaking.
-- Some builder text appears uneven at the tested desktop scale.
-- Other Linux distributions, GPU/driver combinations, and older library versions have not been verified.
+- The game launches with Direct3D and sound on Bazzite and Steam Deck.
+- You can choose a starting resolution, including 720p, Steam Deck's 1280×800, 1080p, ultrawide or windowed.
+- Saves and settings stay on your computer, not inside the AppImage. Rebuilding the game normally picks up the same saves. The usual folder is `${XDG_DATA_HOME:-$HOME/.local/share}/hp1-magipack-private/`.
+- On Steam Deck, map the left stick to the **arrow keys** in that game's Steam Input layout. The default WASD mapping won't move Harry.
+- The builder now has a **Back up saves & settings** button. Its automated tests pass; I'm still waiting for the hands-on check. Close the game before making a backup. The button makes a new `HP1-backup-*` folder and doesn't overwrite your saves.
 
-## Release gate
+## Bits I'm still working on
 
-The private beta packages a Wine runner and a large 32-bit runtime. Their exact provenance, redistribution terms, notices, and source obligations have not been fully cleared. A public builder binary will not be posted until that review and the final hands-on checks are complete. A generated **game** AppImage contains commercial game content and will never be published here.
+At 1280×800, thin lines can show up on the title or loading screens, and Dumbledore's glasses can have a thick shadow. We've seen that on Bazzite and Deck, but it hasn't stopped the game being playable. Some text in the builder also looks a bit uneven. The 720p option has been the most reliable-looking one so far.
 
-The existing [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) is the **legacy Bottles-based source release**, not the ZIP-only beta. This page will be updated when a public ZIP-only beta is actually available. Until then, do not treat the linked legacy script or any unofficial mirror as the new builder.
+I've only tested Bazzite and Steam Deck. I can't promise it works on every Linux PC or graphics setup yet.
+
+Before I put up a public builder AppImage, I need to finish checking the Wine and runtime files it would include, plus the last few hands-on tests. I won't upload a built **game** AppImage here because that would contain the game's files. When there's a public beta ready, this page and [Releases](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases) will say so clearly.
