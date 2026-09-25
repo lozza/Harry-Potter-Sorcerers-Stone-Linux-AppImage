@@ -19,6 +19,21 @@ binary still lacks complete release clearance.
 - Both native DXVK DLLs match Bottles `dxvk-2.7.1-6-fc848a4/x32`. The packaged `unzip` matches Fedora `unzip-6.0-69.fc44`; innoextract reports 1.9 and includes a licence directory.
 - These exact-origin matches do not clear the binary for publication. The M30 package still needs matching-source and component-notice mapping for Soda, the 32-bit Freedesktop SDK files, DXVK and all packaged tools. The related Freedesktop Platform installation has a licence collection, but its build commit differs from this Compat.i386 extension; coverage remains unverified.
 
+## M38 Soda source-reconstruction gap
+
+The local Bottles cache contains `soda-9.0-1-x86_64.tar.xz` at 64,564,696
+bytes, SHA-256 `c38fe0ad3c12a49b61ec1fcaea5c5d8da4a3d1afc5991befe2af6b125f014c28`.
+That exactly matches the asset digest currently reported by the upstream
+[Soda 9.0-1 release](https://github.com/bottlesdevs/wine/releases/tag/soda-9.0-1).
+The release tag points to build-workflow commit
+`1bd3662c0fa6ab0e58af18a5192ce69374a1f108`, not a vendored Wine source
+tree. Its [workflow](https://github.com/bottlesdevs/wine/blob/soda-9.0-1/.github/workflows/build-soda.yml)
+clones Wine-TKG's default branch and fetches the Soda configuration from the
+build-tools `main` branch without pinned commits. The exact source/patch set
+for this particular archive has therefore not been reconstructed. Do not
+treat a link to the moving upstream repositories as a complete corresponding
+source package for a public binary.
+
 ## Current source-only dependencies
 
 | Component | Version | Source | Licence/release status | Purpose |
