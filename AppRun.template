@@ -1,4 +1,5 @@
 #!/bin/sh
+# Launcher template for the legacy Bottles-based builder only.
 set -eu
 
 APPDIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)

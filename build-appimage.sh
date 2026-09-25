@@ -1,4 +1,6 @@
 #!/bin/sh
+# Legacy Bottles-based builder. This is not the newer ZIP-only private beta.
+# See README.md before installing Bottles or using this script.
 set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -12,6 +14,7 @@ CHECK_ONLY=0
 usage() {
     cat <<EOF
 Build a self-contained Harry Potter Linux AppImage.
+LEGACY Bottles-based route only; not the ZIP-only private beta. See README.md.
 
 Easy mode:
   $0
