@@ -15,7 +15,7 @@ Two exact ZIP layouts have been verified: the original parent-folder MagiPack ar
 - A game built privately has launched on Bazzite and Steam Deck in Desktop and Gaming Modes with hardware Direct3D and audio. The Deck's movement controls need a per-game Steam Input layout that maps the left stick to arrow keys; the default WASD mapping does not move the character.
 - The builder offers a starting resolution, including 1280×720, 1280×800 Deck, 1080p, ultrawide, and windowed options. 1280×720 is the best-verified visual baseline.
 - Saves and settings are writable under `${XDG_DATA_HOME:-$HOME/.local/share}/hp1-magipack-private/`, not inside the AppImage or builder. Rebuilding the AppImage normally sees the same local saves.
-- The new private beta includes a **Back up saves & settings** button. With the game closed, choose an output folder and use the button; it creates a new `HP1-backup-*` folder without overwriting live saves. It does not restore files automatically. Do not upload your backup.
+- The new private beta includes a **Back up saves & settings** button (automated tests pass; hands-on confirmation is pending). With the game closed, choose an output folder and use the button; it creates a new `HP1-backup-*` folder without overwriting live saves. It does not restore files automatically. Do not upload your backup.
 
 ## Known beta issues and test scope
 
@@ -27,4 +27,4 @@ Two exact ZIP layouts have been verified: the original parent-folder MagiPack ar
 
 The private beta packages a Wine runner and a large 32-bit runtime. Their exact provenance, redistribution terms, notices, and source obligations have not been fully cleared. A public builder binary will not be posted until that review and the final hands-on checks are complete. A generated **game** AppImage contains commercial game content and will never be published here.
 
-This page will be updated when a public beta is actually available. Until then, do not treat the legacy Bottles script below or any unofficial mirror as the ZIP-only builder.
+The existing [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) is the **legacy Bottles-based source release**, not the ZIP-only beta. This page will be updated when a public ZIP-only beta is actually available. Until then, do not treat the linked legacy script or any unofficial mirror as the new builder.
