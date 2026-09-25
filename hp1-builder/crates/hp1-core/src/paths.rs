@@ -1,0 +1,5 @@
+use std::path::{Component, Path, PathBuf};
+#[derive(Debug, Clone, PartialEq, Eq)] pub enum SafePathError { Absolute, Traversal, Empty, Unsupported }
+/// Rejects archive paths that cannot be placed safely under a staging root.
+pub fn safe_relative_path(path: &Path) -> Result<PathBuf, SafePathError> { let mut output=PathBuf::new(); for component in path.components() { match component { Component::Normal(name) => output.push(name), Component::CurDir => {}, Component::ParentDir => return Err(SafePathError::Traversal), Component::RootDir | Component::Prefix(_) => return Err(SafePathError::Absolute), } } if output.as_os_str().is_empty() { Err(SafePathError::Empty) } else { Ok(output) } }
+#[cfg(test)] mod tests { use super::*; #[test] fn rejects_unsafe_paths() { assert_eq!(safe_relative_path(Path::new("../HP.exe")),Err(SafePathError::Traversal)); assert_eq!(safe_relative_path(Path::new("/HP.exe")),Err(SafePathError::Absolute)); assert_eq!(safe_relative_path(Path::new("System/HP.exe")).unwrap(),PathBuf::from("System/HP.exe")); } }

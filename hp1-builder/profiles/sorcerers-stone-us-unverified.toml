@@ -1,0 +1,18 @@
+# Exact, ZIP-only v1 input profile. It identifies the ZIP by full SHA-256,
+# size, safe central-directory layout, and its two installer-file fingerprints.
+schema_version = 1
+id = "sorcerers-stone-magipack-repack-v3-en"
+edition_name = "Harry Potter and the Sorcerer's Stone"
+region = "English ZIP-only profile"
+input_sha256 = "304eb33f433bca773214a85291c87298a769c081bdcbd6986f06147a5d9dbc75"
+input_size = 271540366
+installer_type = "inno-setup-5.4.2"
+extraction_method = "innoextract-1.9-direct-app-component"
+installer_path = "Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN/Game Files/Harry Potter and the Sorcerer's Stone_Repack_v3_Setup.exe"
+installer_sha256 = "460697af6cec15c02be5e18fdb552aabaf68d39d5f310aac3d8ed6871dbc0b56"
+data_path = "Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN/Game Files/Harry Potter and the Sorcerer's Stone_Repack_v3_Setup-1.bin"
+data_sha256 = "e05ef3a10983d03a3848d6ab0cbee97c1e7f2735d9c8718561ab1797c91839e9"
+data_size = 271334657
+enabled = true
+required_zip_path = "Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN/Game Files/Harry Potter and the Sorcerer's Stone_Repack_v3_Setup.exe"
+required_zip_path = "Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN/Game Files/Harry Potter and the Sorcerer's Stone_Repack_v3_Setup-1.bin"

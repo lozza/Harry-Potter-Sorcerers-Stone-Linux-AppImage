@@ -1,0 +1,15 @@
+[package]
+name = "hp1-builder"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "hp1-builder"
+path = "src/main.rs"
+
+[dependencies]
+hp1-core = { path = "../hp1-core" }
+
+[lints]
+workspace = true

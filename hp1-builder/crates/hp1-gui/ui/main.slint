@@ -1,0 +1,58 @@
+import { Button, ComboBox, LineEdit, VerticalBox, HorizontalBox, ProgressIndicator, ScrollView } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    title: "HP1 Builder (beta preview)";
+    width: 760px; height: 690px;
+    in-out property <bool> building: false;
+    in-out property <bool> choosing: false;
+    in-out property <bool> backing-up: false;
+    in-out property <bool> backup-finished: false;
+    in-out property <bool> backup-failed: false;
+    in-out property <bool> build-finished: false;
+    in-out property <bool> build-failed: false;
+    in-out property <float> progress-value: 0;
+    in-out property <string> status-text: "Choose the verified ZIP and an empty output folder.";
+    in-out property <string> diagnostic-text: "Diagnostic log will appear here.";
+    in-out property <string> zip-path: "";
+    in-out property <string> output-path: "";
+    callback browse-zip();
+    callback browse-output();
+    callback request-build(string, string, int);
+    callback request-backup(string);
+    callback open-project();
+    VerticalBox {
+        padding: 20px; spacing: 12px;
+        Text { text: "Harry Potter and the Sorcerer’s Stone — private builder"; font-size: 22px; wrap: word-wrap; }
+        Text { text: "Builds locally from one verified ZIP. Nothing is uploaded or downloaded."; wrap: word-wrap; }
+        Text { text: "Verified MagiPack ZIP"; font-weight: 700; }
+        HorizontalBox {
+            LineEdit { text <=> root.zip-path; placeholder-text: "/path/to/your/game.zip"; enabled: !building && !choosing && !backing-up; }
+            Button { text: "Browse…"; enabled: !building && !choosing && !backing-up; clicked => { browse-zip(); } }
+        }
+        Text { text: "Output folder"; font-weight: 700; }
+        HorizontalBox {
+            LineEdit { text <=> root.output-path; placeholder-text: "/path/to/output-folder"; enabled: !building && !choosing && !backing-up; }
+            Button { text: "Browse…"; enabled: !building && !choosing && !backing-up; clicked => { browse-output(); } }
+        }
+        Text { text: "Game resolution (fullscreen unless Windowed is selected)"; font-weight: 700; }
+        resolution-choice := ComboBox {
+            model: ["1280×720 — recommended", "1920×1080", "1280×800 — Steam Deck", "2560×1080 — ultrawide", "1280×720 — windowed"];
+            current-index: 0;
+            enabled: !building && !backing-up;
+        }
+        Text { text: backup-finished ? "✓ BACKUP COMPLETE" : backup-failed ? "✗ BACKUP FAILED" : backing-up ? "BACKING UP…" : build-finished ? "✓ BUILD COMPLETE" : build-failed ? "✗ BUILD FAILED" : building ? "BUILDING…" : "READY"; font-size: 22px; font-weight: 700; color: backup-finished || build-finished ? #5ad683 : backup-failed || build-failed ? #ff8c8c : #f1c96d; }
+        Text { text: status-text; wrap: word-wrap; font-weight: backup-finished || backup-failed || build-finished || build-failed ? 700 : 400; }
+        ProgressIndicator { progress: progress-value; }
+        HorizontalBox {
+            Button { text: building ? "Building…" : "Build AppImage"; enabled: !building && !choosing && !backing-up; clicked => { request-build(root.zip-path, root.output-path, resolution-choice.current-index); } }
+            Button { text: backing-up ? "Backing up…" : "Back up saves & settings"; enabled: !building && !choosing && !backing-up; clicked => { request-backup(root.output-path); } }
+        }
+        Text { text: "For backup: close the game first. The backup goes into the output folder; no ZIP is needed."; wrap: word-wrap; font-size: 12px; }
+        Text { text: "Diagnostic log (also saved as hp1-builder.log in the output folder)"; }
+        ScrollView { height: 170px; Text { text: diagnostic-text; wrap: word-wrap; } }
+        HorizontalBox {
+            Text { text: "Official project and updates: github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage"; wrap: word-wrap; font-size: 11px; }
+            Button { text: "Open project"; clicked => { open-project(); } }
+        }
+    }
+}

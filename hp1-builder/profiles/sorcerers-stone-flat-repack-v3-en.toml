@@ -1,0 +1,18 @@
+# Exact flat-layout ZIP input. Only the installer EXE and BIN are extracted;
+# the notes entry is never staged into the generated game AppImage.
+schema_version = 1
+id = "sorcerers-stone-flat-repack-v3-en"
+edition_name = "Harry Potter and the Sorcerer's Stone"
+region = "English flat-layout ZIP-only profile"
+input_sha256 = "d92de47186e9ccc8f9616a18e3fe17742e66f89f9f1d12197d0f4d28058fb874"
+input_size = 271662225
+installer_type = "inno-setup-5.4.2"
+extraction_method = "innoextract-1.9-direct-app-component"
+installer_path = "Harry Potter and the Sorcerer's Stone_Repack_v3_Setup.exe"
+installer_sha256 = "460697af6cec15c02be5e18fdb552aabaf68d39d5f310aac3d8ed6871dbc0b56"
+data_path = "Harry Potter and the Sorcerer's Stone_Repack_v3_Setup-1.bin"
+data_sha256 = "e05ef3a10983d03a3848d6ab0cbee97c1e7f2735d9c8718561ab1797c91839e9"
+data_size = 271334657
+enabled = true
+required_zip_path = "Harry Potter and the Sorcerer's Stone_Repack_v3_Setup.exe"
+required_zip_path = "Harry Potter and the Sorcerer's Stone_Repack_v3_Setup-1.bin"

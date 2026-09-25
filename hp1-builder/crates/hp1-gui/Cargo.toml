@@ -1,0 +1,20 @@
+[package]
+name = "hp1-builder-gui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+build = "build.rs"
+
+[[bin]]
+name = "hp1-builder-gui"
+path = "src/main.rs"
+
+[dependencies]
+hp1-core = { path = "../hp1-core" }
+slint = { version = "=1.13.1", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-winit"] }
+
+[build-dependencies]
+slint-build = "=1.13.1"
+
+[lints]
+workspace = true

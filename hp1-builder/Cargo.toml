@@ -1,0 +1,21 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/hp1-core",
+  "crates/hp1-cli",
+  "crates/hp1-gui",
+]
+default-members = ["crates/hp1-core", "crates/hp1-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-only"
+authors = ["HP1 Builder contributors"]
+
+[workspace.lints.rust]
+# Slint generates a module that carries a narrow `allow(unsafe_code)` for its
+# static item-tree implementation. `deny` keeps handwritten crates safe while
+# allowing that generated module to compile; `forbid` cannot be lowered by the
+# generated module and breaks the GUI build.
+unsafe_code = "deny"
