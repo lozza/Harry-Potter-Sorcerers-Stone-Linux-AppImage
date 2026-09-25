@@ -37,6 +37,13 @@ The archive itself contains a top-level `LICENSE` stating Wine is
 LGPL-2.1-or-later and referring to `COPYING.LIB`; the copied runner directory
 omits that top-level notice, and the archive has no `COPYING.LIB` entry.
 
+## M39 source and tool audit
+
+- The Flathub Compat.i386 OSTree subject `4535d0fa4894628fdf49999ac5c2aacd138a6035` resolves to the exact [Freedesktop SDK source commit](https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/commit/4535d0fa4894628fdf49999ac5c2aacd138a6035), dated 2026-09-15. Its `platform-arch-libs.bst` composes the 32-bit extension from `platform-image.bst` while excluding docs; its `libpulse.bst` pins PulseAudio source commit `1f020889c9aa44ea0f63d7222e8c2b62c3f45f68` and a named patch. The matching 25.08.17 Platform release exists remotely with that same source subject. The installed older 25.08.14 Platform licence tree must not be assumed identical.
+- The packaged `tools/file` is byte-identical to `/usr/bin/file` inside Fedora's signature-verified `file-5.46-10.fc44.x86_64.rpm` (SHA-256 `268c7ad01da54ad1305f179817453790ec083ac5c3e92702bca558984e7edf34`); `magic.mgc` matches installed `file-libs-5.46-10.fc44`. Their source RPM is `file-5.46-10.fc44.src.rpm`, with BSD-2-Clause-Darwin and BSD-2-Clause metadata.
+- The packaged `appimagetool.AppImage` matches the official [AppImage appimagetool continuous release](https://github.com/AppImage/appimagetool/releases/tag/continuous) at commit `8c8c91f762b412a19f4e8d2c4b35afb98f2d7c81`, SHA-256 `a6d71e2b6cd66f8e8d16c37ad164658985e0cf5fcaa950c90a482890cb9d13e0`. The separately packaged AppImage runtime is exactly the first 944,632 bytes of that official AppImage, SHA-256 `4448aff037fa32788d2fb8ac9a10bd9688cd95ffcebbda05d1962278d0fa8c47`; it reports [type2-runtime source commit](https://github.com/AppImage/type2-runtime/commit/caf24f9f712084686bfc24a70b75e50df0aefb9c).
+- Packaged innoextract's wrapper and amd64 binary match the local official 1.9 archive, and the required innoextract/Boost/compression/C++ runtime licence files are present. Tool identification does not resolve the separate Wine corresponding-source problem.
+
 ## Current source-only dependencies
 
 | Component | Version | Source | Licence/release status | Purpose |
