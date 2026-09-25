@@ -33,6 +33,9 @@ build-tools `main` branch without pinned commits. The exact source/patch set
 for this particular archive has therefore not been reconstructed. Do not
 treat a link to the moving upstream repositories as a complete corresponding
 source package for a public binary.
+The archive itself contains a top-level `LICENSE` stating Wine is
+LGPL-2.1-or-later and referring to `COPYING.LIB`; the copied runner directory
+omits that top-level notice, and the archive has no `COPYING.LIB` entry.
 
 ## Current source-only dependencies
 
