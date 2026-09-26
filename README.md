@@ -1,6 +1,6 @@
 # Harry Potter and the Sorcerer's Stone on Linux
 
-**HP1 Builder** is a desktop tool that turns a supported game ZIP into a Linux AppImage you can launch directly. Choose the ZIP, an output folder and a resolution; the tool builds the game app for you. No Bottles setup or system Wine installation is needed.
+**HP1 Builder** is a desktop tool that turns a supported prepackaged game ZIP into a Linux AppImage you can launch directly. Choose the ZIP, an output folder and a resolution; the tool builds the game app for you. No Bottles setup or system Wine installation is needed.
 
 The original Windows game runs inside the AppImage using bundled compatibility software. It behaves like a standalone Linux app, but the game's code has **not** been rewritten as native Linux software. This is a **public beta**.
 
