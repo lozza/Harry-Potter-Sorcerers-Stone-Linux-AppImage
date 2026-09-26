@@ -1,7 +1,7 @@
 import { Button, ComboBox, LineEdit, VerticalBox, HorizontalBox, ProgressIndicator, ScrollView } from "std-widgets.slint";
 
 export component MainWindow inherits Window {
-    title: "HP1 Builder (beta preview)";
+    title: "HP1 Builder (Beta)";
     width: 760px; height: 690px;
     in-out property <bool> building: false;
     in-out property <bool> choosing: false;
@@ -22,7 +22,7 @@ export component MainWindow inherits Window {
     callback open-project();
     VerticalBox {
         padding: 20px; spacing: 12px;
-        Text { text: "Harry Potter and the Sorcerer’s Stone — private builder"; font-size: 22px; wrap: word-wrap; }
+        Text { text: "Harry Potter and the Sorcerer’s Stone — AppImage Builder"; font-size: 22px; wrap: word-wrap; }
         Text { text: "Your game ZIP stays local. First build downloads about 95 MB of verified Wine, DXVK and AppImage tools; a missing 32-bit runtime adds about 130 MB. Downloads are cached."; wrap: word-wrap; }
         Text { text: "Verified MagiPack ZIP"; font-weight: 700; }
         HorizontalBox {

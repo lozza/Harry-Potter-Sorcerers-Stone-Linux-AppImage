@@ -52,8 +52,8 @@ fn main() -> Result<(), slint::PlatformError> {
         window.set_build_finished(false);
         window.set_build_failed(false);
         window.set_progress_value(0.0);
-        window.set_status_text("Starting private build…".into());
-        window.set_diagnostic_text("Starting private build…".into());
+        window.set_status_text("Starting build…".into());
+        window.set_diagnostic_text("Starting build…".into());
         let thread_weak = weak.clone();
         std::thread::spawn(move || {
             let log = fs::create_dir_all(&output_path)

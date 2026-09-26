@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=HP1 Builder (Beta)
+Comment=Turn a supported MagiPack ZIP into a Linux game AppImage
+Exec=AppRun
+Icon=hp1-builder
+Categories=Game;Utility;
+Terminal=false
