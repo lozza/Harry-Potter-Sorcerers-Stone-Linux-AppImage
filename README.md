@@ -4,7 +4,7 @@
 
 The original Windows game runs inside the AppImage using bundled compatibility software. It behaves like a standalone Linux app, but the game's code has **not** been rewritten as native Linux software. This is a **public beta**.
 
-**[Download the latest v2 beta builder](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1)** — under **Assets**, choose `hp1-m46-online-builder-beta.AppImage`. A `.sha256` file is provided to check the download.
+**[Download the latest v2 beta builder](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.2)** — under **Assets**, choose `HP1-Builder-v2.0.0-beta.2-x86_64.AppImage`. A `.sha256` file is provided to check the download.
 
 ## Why this builder exists
 
