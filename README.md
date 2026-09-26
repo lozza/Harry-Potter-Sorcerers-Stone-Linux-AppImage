@@ -38,4 +38,4 @@ The [builder source](hp1-builder/README.md) is here under GPLv3. The beta AppIma
 
 ## Older method
 
-The [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) is my **older Bottles-based method**. I'm keeping its [instructions](docs/LEGACY_BOTTLES_BUILDER.md) for anyone who needs that alternative, but if you're starting now, use the new v2 beta above.
+The [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) was an **early Bottles-based experiment**, not the main builder. I'm keeping its [instructions](docs/LEGACY_BOTTLES_BUILDER.md) as an alternative for anyone who needs them. If you're starting now, use the v2 beta at the top of this page.
