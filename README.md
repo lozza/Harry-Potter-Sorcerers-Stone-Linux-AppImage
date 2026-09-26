@@ -6,13 +6,13 @@ This is an unofficial fan project. It's not connected to Warner Bros., EA or the
 
 ## Where things stand
 
-The [ZIP-builder source](hp1-builder/README.md) is now here under GPLv3, including the online-download route. The ready-to-run builder AppImage is still a **private test build**. Its Build button has made working private game AppImages on Bazzite and Steam Deck. I'm finishing the small builder package checks before I put a new binary in Releases.
+The [ZIP-only beta builder AppImage](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1) is now public, with the [builder source](hp1-builder/README.md) here under GPLv3. Download the builder from that Release, make it executable, and open it in Desktop Mode. Its Build button has made working **private game AppImages** on Bazzite and Steam Deck. This is a beta, not a finished release.
 
 The [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) and `build-appimage.sh` are the **older Bottles-based version**. I'm keeping them here for anyone who wants that method, with the [old instructions clearly marked](docs/LEGACY_BOTTLES_BUILDER.md). **You don't need to install Bottles for the new ZIP builder.**
 
 ## What the new builder does
 
-It accepts either of two ZIP layouts I've checked: one has a parent folder, and the other has the same installer files at the top level. It checks the whole ZIP, not just its name. It then extracts the installer files without running the installer and builds your own private game AppImage. You supply the ZIP yourself; I don't provide a game download, and the builder never downloads or uploads the game. The private online builder downloads pinned free compatibility tools on the first build (about 95 MB, plus about 130 MB if the 32-bit Flatpak runtime is missing) and caches them. Bottles and system Wine aren't required.
+It accepts either of two ZIP layouts I've checked: one has a parent folder, and the other has the same installer files at the top level. It checks the whole ZIP, not just its name. It then extracts the installer files without running the installer and builds your own private game AppImage. You supply the ZIP yourself; I don't provide a game download, and the builder never downloads or uploads the game. **You need an internet connection for the first build**: the builder downloads pinned free compatibility tools (about 95 MB, plus about 130 MB if the 32-bit Flatpak runtime is missing), checks their hashes and caches them for later builds. Your game ZIP stays local. Bottles and system Wine aren't required.
 
 So far, the private tests have shown:
 
@@ -28,4 +28,4 @@ At 1280×800, thin lines can show up on the title or loading screens. On the Dec
 
 I've only tested Bazzite and Steam Deck. I can't promise it works on every Linux PC or graphics setup yet.
 
-Before I put up a public builder AppImage, I need to finish the bundled-tool licence notices and a couple of safety checks on the download/cache path, then test the final package. The free Wine and runtime components are downloaded and verified during building rather than copied into the builder AppImage. I won't upload a built **game** AppImage here because that would contain the game's files. The old v1.0.0 release is still the Bottles-based version; a new public ZIP-builder beta will have its own clearly labelled Release when ready.
+The [public beta Release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1) contains only the small builder and its checksum, not a built **game** AppImage or game files. Free Wine and runtime components are downloaded and verified during your own build rather than copied into the builder download. The older v1.0.0 Release is still the Bottles-based version. I still need more testing on other Linux systems, and 1280×800 remains experimental.
