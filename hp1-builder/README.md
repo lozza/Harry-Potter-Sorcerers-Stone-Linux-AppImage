@@ -28,20 +28,15 @@ XDG-writable Wine prefix; and builds a private game AppImage. It does not use
 ISO media, a separately supplied compatibility/no-CD file, Bottles, or system
 Wine.
 
-This is a **beta candidate, not yet redistribution-ready**. Its small builder
-AppImage bundles the GUI, ZIP extractor, Inno extractor and AppImage packaging
-tools except the AppImage packager; it does not bundle a Wine runner or 32-bit
-runtime. A first build fetches Soda Wine (~64.6 MB), DXVK (~15.4 MB), and the
+The [public beta builder AppImage](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1) bundles the GUI, ZIP extractor, Inno extractor and basic inspection tools; it does not bundle a Wine runner, DXVK or a 32-bit runtime. **An internet connection is required for the first build** so it can download the free components. Cached components can be reused on later builds. A first build fetches Soda Wine (~64.6 MB), DXVK (~15.4 MB), and the
 AppImage packager (~15.1 MB). If the exact Flatpak Compat.i386
 runtime is not already installed, Flatpak downloads about 130 MB more. Bottles
 and system Wine are not required. GPU drivers are discovered on the host at
 game launch and are never bundled. See the notice and provenance gate below.
 
-See [third-party notices](docs/THIRD_PARTY_NOTICES.md) for the remaining
-public-binary checks. Machine-specific audit logs and milestone notes stay
-outside the published source tree.
+See [third-party notices](docs/THIRD_PARTY_NOTICES.md) for the online builder's bundled-tool licences and the separate historical audit of the older offline package. Machine-specific audit logs and milestone notes stay outside the published source tree.
 
-## Private workflow
+## Using the public beta
 
 With either verified v1 ZIP:
 
@@ -108,8 +103,7 @@ loading screens can show lines, and the Direct3D picker returned on repeated
 Steam Deck launches. That picker blocks an unattended Gaming Mode launch at
 this resolution. Two Deck launches at 1280×720 skipped it and had sound.
 The generated game AppImage is for personal use and must not be uploaded.
-Public builder publication is conditional on GUI checks and third-party
-licence notices.
+The public builder beta is available, while the generated game AppImage remains private and is never a release upload.
 
 ## Known beta limitations
 
@@ -146,8 +140,4 @@ The ZIP-builder source is licensed under [GNU GPLv3](LICENSE)
 (`GPL-3.0-only`). This does not grant redistribution rights for commercial
 game files or third-party binaries.
 
-The source uses Rust and a pinned Slint GUI dependency. Private artifacts copy
-the locally audited runner/runtime and two DXVK DLLs, and use local
-innoextract/AppImage tooling. Before any release, this project must record the
-version, source URL, licence, attribution/source obligations, and redistribution
-suitability of every bundled component and include required notices.
+The source uses Rust and a pinned Slint GUI dependency. The public builder beta includes licence and source notices for the components it actually bundles. Its downloaded Wine/DXVK/runtime components are used to make a private game AppImage; the builder download itself does not contain them or any commercial game files. The older offline M30 package had a different copied-runner layout and is not this public release.
