@@ -81,7 +81,7 @@ fn parse_build(arguments: Vec<String>) -> Result<(BuildRequest, bool), (i32, Str
 }
 
 fn parse_log_format(value: &str) -> Result<bool, (i32, String)> { match value { "text" => Ok(false), "json" => Ok(true), _ => Err((EXIT_USAGE, "--log-format accepts text or json".into())) } }
-fn check() -> Result<(), (i32, String)> { let profiles = load_profiles(&default_profiles()).map_err(|e| (EXIT_INTERNAL, e.to_string()))?; println!("Core checks passed: {} ZIP profile(s) loaded.\nPrivate packaging requires explicitly supplied audited local tooling; no runtime is approved for redistribution.", profiles.len()); Ok(()) }
+fn check() -> Result<(), (i32, String)> { let profiles = load_profiles(&default_profiles()).map_err(|e| (EXIT_INTERNAL, e.to_string()))?; println!("Core checks passed: {} ZIP profile(s) loaded.\nGame ZIPs stay local; free compatibility components are downloaded and SHA-256 verified on the first build.", profiles.len()); Ok(()) }
 fn core_error(error: hp1_core::CoreError) -> (i32, String) { let code = match error { hp1_core::CoreError::InvalidInput(_) => EXIT_INPUT, hp1_core::CoreError::Unsupported(_) => EXIT_UNSUPPORTED, _ => EXIT_INTERNAL }; (code, error.to_string()) }
 struct Printer { json: bool }
 impl EventSink for Printer { fn emit(&mut self, event: BuildEvent) { if self.json { println!("{{\"stage\":\"{}\",\"event\":\"{}\",\"message\":\"{}\"}}", event.stage.as_str(), event.kind, json_escape(&event.message)); } else if event.message.is_empty() { println!("[{}] {}", event.stage.as_str(), event.kind); } else { println!("[{}] {}: {}", event.stage.as_str(), event.kind, event.message); } } }

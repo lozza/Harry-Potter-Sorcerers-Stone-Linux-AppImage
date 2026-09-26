@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+APPDIR=${APPDIR:-$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)}
+export HP1_PROFILES_DIR="$APPDIR/profiles"
+export HP1_INNOEXTRACT="$APPDIR/tools/innoextract/innoextract"
+export HP1_APPIMAGE_RUNTIME="$APPDIR/tools/runtime-x86_64-private"
+export HP1_UNZIP="$APPDIR/tools/unzip"
+export MAGIC="$APPDIR/tools/magic.mgc"
+export PATH="$APPDIR/tools:$PATH"
+export HP1_PACKAGER_PATH="$PATH"
+export APPIMAGE_EXTRACT_AND_RUN=1
+exec "$APPDIR/usr/bin/hp1-builder-gui" "$@"

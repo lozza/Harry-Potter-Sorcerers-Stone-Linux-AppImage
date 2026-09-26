@@ -7,6 +7,7 @@ mod events;
 mod hash;
 mod paths;
 mod pipeline;
+mod online;
 mod profile;
 mod zip;
 
@@ -59,8 +60,8 @@ impl From<std::io::Error> for CoreError {
 pub fn validate_build(request: &BuildRequest, sink: &mut dyn EventSink) -> Result<EditionProfile, CoreError> {
     sink.emit(BuildEvent::started(BuildStage::ValidateArguments));
     validate_regular_file(&request.source_zip, "Game ZIP")?;
-    if request.output.as_os_str().is_empty() {
-        return Err(CoreError::InvalidInput("An output directory is required.".into()));
+    if !request.output.is_absolute() {
+        return Err(CoreError::InvalidInput("Output folder must be an absolute path.".into()));
     }
     sink.emit(BuildEvent::completed(BuildStage::ValidateArguments));
 

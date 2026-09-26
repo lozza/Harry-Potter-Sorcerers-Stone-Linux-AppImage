@@ -6,7 +6,7 @@ This is an unofficial fan project. It's not connected to Warner Bros., EA or the
 
 ## Where things stand
 
-The [ZIP-builder source checkpoint](hp1-builder/README.md) is here under GPLv3, but the newest online-download builder is still a **private test build**. Its Build button has made working private game AppImages on Bazzite and Steam Deck. I'm finishing the release checks before I put a new builder binary in Releases; the source checkpoint on this page does not yet contain every private test change.
+The [ZIP-builder source](hp1-builder/README.md) is now here under GPLv3, including the online-download route. The ready-to-run builder AppImage is still a **private test build**. Its Build button has made working private game AppImages on Bazzite and Steam Deck. I'm finishing the small builder package checks before I put a new binary in Releases.
 
 The [v1.0.0 release](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v1.0.0) and `build-appimage.sh` are the **older Bottles-based version**. I'm keeping them here for anyone who wants that method, with the [old instructions clearly marked](docs/LEGACY_BOTTLES_BUILDER.md). **You don't need to install Bottles for the new ZIP builder.**
 

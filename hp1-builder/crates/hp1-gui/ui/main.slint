@@ -23,7 +23,7 @@ export component MainWindow inherits Window {
     VerticalBox {
         padding: 20px; spacing: 12px;
         Text { text: "Harry Potter and the Sorcerer’s Stone — private builder"; font-size: 22px; wrap: word-wrap; }
-        Text { text: "Builds locally from one verified ZIP. Nothing is uploaded or downloaded."; wrap: word-wrap; }
+        Text { text: "Your game ZIP stays local. First build downloads about 95 MB of verified Wine, DXVK and AppImage tools; a missing 32-bit runtime adds about 130 MB. Downloads are cached."; wrap: word-wrap; }
         Text { text: "Verified MagiPack ZIP"; font-weight: 700; }
         HorizontalBox {
             LineEdit { text <=> root.zip-path; placeholder-text: "/path/to/your/game.zip"; enabled: !building && !choosing && !backing-up; }
@@ -36,10 +36,12 @@ export component MainWindow inherits Window {
         }
         Text { text: "Game resolution (fullscreen unless Windowed is selected)"; font-weight: 700; }
         resolution-choice := ComboBox {
-            model: ["1280×720 — recommended", "1920×1080", "1280×800 — Steam Deck", "2560×1080 — ultrawide", "1280×720 — windowed"];
+            model: ["1280×720 — recommended for Steam Deck", "1920×1080", "1280×800 — experimental on Steam Deck", "2560×1080 — ultrawide", "1280×720 — windowed"];
             current-index: 0;
             enabled: !building && !backing-up;
         }
+        Text { text: "This sets the starting default. If you have played before, your last selected resolution is kept across rebuilds."; wrap: word-wrap; font-size: 12px; }
+        if resolution-choice.current-index == 2: Text { text: "Experimental: 1280×800 repeatedly opens a Direct3D picker on Steam Deck, blocking unattended Gaming Mode launch. Use 1280×720 for now."; wrap: word-wrap; font-size: 12px; color: #f1c96d; }
         Text { text: backup-finished ? "✓ BACKUP COMPLETE" : backup-failed ? "✗ BACKUP FAILED" : backing-up ? "BACKING UP…" : build-finished ? "✓ BUILD COMPLETE" : build-failed ? "✗ BUILD FAILED" : building ? "BUILDING…" : "READY"; font-size: 22px; font-weight: 700; color: backup-finished || build-finished ? #5ad683 : backup-failed || build-failed ? #ff8c8c : #f1c96d; }
         Text { text: status-text; wrap: word-wrap; font-weight: backup-finished || backup-failed || build-finished || build-failed ? 700 : 400; }
         ProgressIndicator { progress: progress-value; }

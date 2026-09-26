@@ -1,0 +1,25 @@
+HP1 Builder — generated private game AppImage component record
+
+This AppImage contains game files extracted only from the user's locally supplied, exact-fingerprint ZIP. Never upload or redistribute the generated game AppImage or game content.
+
+Soda Wine 9.0-1 (runner)
+Archive: https://github.com/bottlesdevs/wine/releases/download/soda-9.0-1/soda-9.0-1-x86_64.tar.xz
+Archive SHA-256: c38fe0ad3c12a49b61ec1fcaea5c5d8da4a3d1afc5991befe2af6b125f014c28
+The archive's LICENSE is retained at runner/LICENSE. The project's release and build recipe are at https://github.com/bottlesdevs/wine/releases/tag/soda-9.0-1 and https://github.com/bottlesdevs/wine. Wine is LGPL-2.1-or-later; the exact source revisions used by Bottles' moving-input Soda build workflow are not yet established. This private artifact is not a redistribution-ready Wine binary package.
+
+DXVK 2.7.1-6-fc848a4 (32-bit dxgi.dll and d3d11.dll)
+Archive: https://github.com/bottlesdevs/components/releases/download/dxvk-2.7.1-6-fc848a4/dxvk-2.7.1-6-fc848a4.tar.gz
+Archive SHA-256: 96a78de1cbe2275c9325d8a69212d9f742d5e48b3507c6f3ad684d1a186c389f
+Bottles component record: https://github.com/bottlesdevs/components/blob/main/dxvk/dxvk-2.7.1-6-fc848a4.yml
+Upstream DXVK source and licence: https://github.com/doitsujin/dxvk
+
+Freedesktop Platform Compat.i386 25.08 (selected 32-bit libraries)
+Flathub ref: runtime/org.freedesktop.Platform.Compat.i386/x86_64/25.08
+OSTree commit: 10c43710cbba7c67183615a06816d8b5a6ef4a079478c9484e9550a1d438241f
+Build source: https://gitlab.com/freedesktop-sdk/freedesktop-sdk/-/commit/4535d0fa4894628fdf49999ac5c2aacd138a6035
+Only non-glibc libraries are retained; the host supplies its matched 32-bit glibc/loader. Complete per-library notices are not yet assembled; this is a private integration artifact, not a cleared runtime redistribution.
+
+AppImage type-2 runtime
+Runtime SHA-256: 4448aff037fa32788d2fb8ac9a10bd9688cd95ffcebbda05d1962278d0fa8c47
+Source: https://github.com/AppImage/type2-runtime
+No host GPU driver is bundled. The game launcher discovers a compatible installed 32-bit Vulkan driver at launch.

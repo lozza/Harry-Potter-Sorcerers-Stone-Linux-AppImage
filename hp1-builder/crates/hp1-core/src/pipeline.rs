@@ -44,10 +44,10 @@ pub fn driver_candidate_from_flatpak_root(root: &Path, nvidia_version: Option<&s
     if candidate.is_dir() { Some(candidate) } else { None }
 }
 
-struct Toolchain { innoextract: PathBuf, reference_appdir: PathBuf, appimagetool: PathBuf, appimage_runtime: PathBuf, packager_path: Option<std::ffi::OsString> }
+struct Toolchain { innoextract: PathBuf, runner: PathBuf, runtime32: PathBuf, dxgi: PathBuf, d3d11: PathBuf, appimagetool: PathBuf, appimage_runtime: PathBuf, packager_path: Option<std::ffi::OsString> }
 
 pub fn build_private_appimage(request: &BuildRequest, profile: &EditionProfile, sink: &mut dyn EventSink) -> Result<(), CoreError> {
-    let tools = private_toolchain()?;
+    let tools = if env::var_os("HP1_PRIVATE_REFERENCE_APPDIR").is_some() { private_toolchain()? } else { online_toolchain(sink)? };
     let output_dir = &request.output;
     fs::create_dir_all(output_dir)?;
     if !fs::metadata(output_dir)?.is_dir() { return Err(CoreError::InvalidInput("Output must be a directory.".into())); }
@@ -90,7 +90,26 @@ fn private_toolchain() -> Result<Toolchain, CoreError> {
     if sha256_file(&appimage_runtime)? != APPIMAGE_RUNTIME_SHA256 {
         return Err(CoreError::Unsupported("HP1_APPIMAGE_RUNTIME does not match the audited private x86_64 AppImage runtime.".into()));
     }
-    Ok(Toolchain { innoextract, reference_appdir, appimagetool: path("HP1_APPIMAGETOOL")?, appimage_runtime, packager_path: env::var_os("HP1_PACKAGER_PATH") })
+    Ok(Toolchain { innoextract, runner: reference_appdir.join("runner"), runtime32: reference_appdir.join("runtime32"), dxgi: reference_appdir.join("prefix-template/drive_c/windows/system32/dxgi.dll"), d3d11: reference_appdir.join("prefix-template/drive_c/windows/system32/d3d11.dll"), appimagetool: path("HP1_APPIMAGETOOL")?, appimage_runtime, packager_path: env::var_os("HP1_PACKAGER_PATH") })
+}
+
+fn online_toolchain(sink: &mut dyn EventSink) -> Result<Toolchain, CoreError> {
+    let needed = |variable: &str| -> Result<PathBuf, CoreError> {
+        let path = PathBuf::from(env::var_os(variable).ok_or_else(|| CoreError::Unsupported(format!("Builder package is missing {variable}.")))?);
+        if !path.is_file() { return Err(CoreError::Unsupported(format!("{variable} does not name a bundled file."))); }
+        Ok(path)
+    };
+    let innoextract = needed("HP1_INNOEXTRACT")?;
+    let extractor_binary = innoextract.parent().ok_or_else(|| CoreError::Unsupported("Invalid bundled innoextract path.".into()))?.join("bin/amd64/innoextract");
+    if sha256_file(&innoextract)? != "3fda40c0f0ddb3328f290bf9d2430972fd3f7b976d8d670c878f960bee47168e"
+        || sha256_file(&extractor_binary)? != "7a8ad941deeb0de8d1f804830f339fd17e27cfbce473615d79d1d65c106884e9" {
+        return Err(CoreError::Unsupported("Bundled innoextract 1.9 wrapper or executable hash mismatch.".into()));
+    }
+    let appimage_runtime = needed("HP1_APPIMAGE_RUNTIME")?;
+    if sha256_file(&appimage_runtime)? != APPIMAGE_RUNTIME_SHA256 { return Err(CoreError::Unsupported("AppImage runtime hash mismatch.".into())); }
+    let downloaded = crate::online::acquire(sink)?;
+    Ok(Toolchain { innoextract, runner: downloaded.runner, runtime32: downloaded.runtime32, dxgi: downloaded.dxgi, d3d11: downloaded.d3d11,
+        appimagetool: downloaded.appimagetool, appimage_runtime, packager_path: env::var_os("HP1_PACKAGER_PATH") })
 }
 
 fn build_into(work: &Path, artifact: &Path, request: &BuildRequest, profile: &EditionProfile, tools: &Toolchain, sink: &mut dyn EventSink) -> Result<(), CoreError> {
@@ -110,12 +129,12 @@ fn build_into(work: &Path, artifact: &Path, request: &BuildRequest, profile: &Ed
     let appdir = work.join("AppDir"); fs::create_dir(&appdir)?;
     copy_tree(&payload, &appdir.join("game"))?;
     remove_installer_artifacts(&appdir.join("game"))?;
-    copy_tree(&tools.reference_appdir.join("runner"), &appdir.join("runner"))?;
-    copy_tree(&tools.reference_appdir.join("runtime32"), &appdir.join("runtime32"))?;
+    copy_tree(&tools.runner, &appdir.join("runner"))?;
+    copy_tree(&tools.runtime32, &appdir.join("runtime32"))?;
     remove_bundled_glibc(&appdir.join("runtime32"))?;
     let dxvk = appdir.join("dxvk"); fs::create_dir(&dxvk)?;
-    copy_checked(&tools.reference_appdir.join("prefix-template/drive_c/windows/system32/dxgi.dll"), &dxvk.join("dxgi.dll"), DXGI_SHA256)?;
-    copy_checked(&tools.reference_appdir.join("prefix-template/drive_c/windows/system32/d3d11.dll"), &dxvk.join("d3d11.dll"), D3D11_SHA256)?;
+    copy_checked(&tools.dxgi, &dxvk.join("dxgi.dll"), DXGI_SHA256)?;
+    copy_checked(&tools.d3d11, &dxvk.join("d3d11.dll"), D3D11_SHA256)?;
     sink.emit(BuildEvent::completed(BuildStage::PreparePayload));
 
     sink.emit(BuildEvent::started(BuildStage::AssembleAppDir));
@@ -198,7 +217,8 @@ fn write_appdir_files(appdir: &Path, default_profile: DisplayProfile) -> Result<
     write_executable(&appdir.join("AppRun"), &launcher)?;
     fs::write(appdir.join("harry-potter.desktop"), "[Desktop Entry]\nType=Application\nName=Harry Potter and the Sorcerer's Stone (private)\nExec=harry-potter\nIcon=harry-potter\nCategories=Game;\nTerminal=false\n")?;
     fs::write(appdir.join("harry-potter.svg"), "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"64\" height=\"64\"><rect width=\"64\" height=\"64\" fill=\"#381b09\"/><text x=\"10\" y=\"43\" font-size=\"28\" fill=\"#f6d681\">HP</text></svg>\n")?;
-    fs::write(appdir.join("PRIVATE_PROVENANCE.txt"), "Private integration artifact only. Game data came from the user's verified local ZIP. Runner/runtime and DXVK DLLs were copied from a locally audited reference AppImage solely for this private test. Host GPU drivers are discovered at launch and are never bundled. Redistribution readiness has not been assessed.\n")?;
+    fs::write(appdir.join("PRIVATE_PROVENANCE.txt"), "Private game AppImage: commercial game files came only from the user's local verified ZIP. Free compatibility components were fetched from pinned upstream archives and an exact Flatpak runtime commit, or supplied by an explicit development-only reference override. SHA-256 validation and component/source details are in THIRD_PARTY_NOTICES.txt. Never publish this game AppImage or game content. No host GPU driver is bundled.\n")?;
+    fs::write(appdir.join("THIRD_PARTY_NOTICES.txt"), include_str!("../../../packaging/GAME_THIRD_PARTY_NOTICES.txt"))?;
     Ok(())
 }
 

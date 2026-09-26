@@ -1,15 +1,16 @@
 # HP1 Builder
 
-HP1 Builder is an in-progress, local-only Linux tool intended to build a
-private AppImage from either of two verified ZIP profiles for
+HP1 Builder is a ZIP-only Linux tool that builds a private game AppImage
+from either of two verified ZIP layouts for
 **Harry Potter and the Sorcerer’s Stone**. **Harry Potter and the
 Philosopher’s Stone** is represented in
 the title and profile architecture, but it is not separately supported.
 
-This repository contains no commercial game data, input ZIP, patch,
-compatibility file, downloader, or link for finding one. You must supply the
-verified ZIP locally. The builder never downloads game inputs and performs its
-work locally.
+This repository contains no commercial game data, input ZIP, no-CD patch,
+or link for finding one. You supply the verified ZIP locally. The builder
+never uploads or downloads game files. On the first build it downloads only
+free compatibility components from pinned upstream releases, verifies their
+sizes and SHA-256 hashes, then caches them for later builds.
 
 The official project and update location is
 [lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage).
@@ -27,11 +28,14 @@ XDG-writable Wine prefix; and builds a private game AppImage. It does not use
 ISO media, a separately supplied compatibility/no-CD file, Bottles, or system
 Wine.
 
-This is a **beta candidate, not yet redistribution-ready**. The private build requires audited local
-copies of the runner/runtime, innoextract, AppImage packager, and AppImage
-runtime through explicit environment variables. Their provenance and licences
-have not yet been cleared for a public artifact. GPU drivers are discovered on
-the host at launch and are never bundled.
+This is a **beta candidate, not yet redistribution-ready**. Its small builder
+AppImage bundles the GUI, ZIP extractor, Inno extractor and AppImage packaging
+tools except the AppImage packager; it does not bundle a Wine runner or 32-bit
+runtime. A first build fetches Soda Wine (~64.6 MB), DXVK (~15.4 MB), and the
+AppImage packager (~15.1 MB). If the exact Flatpak Compat.i386
+runtime is not already installed, Flatpak downloads about 130 MB more. Bottles
+and system Wine are not required. GPU drivers are discovered on the host at
+game launch and are never bundled. See the notice and provenance gate below.
 
 See [third-party notices](docs/THIRD_PARTY_NOTICES.md) for the remaining
 public-binary checks. Machine-specific audit logs and milestone notes stay
@@ -39,13 +43,16 @@ outside the published source tree.
 
 ## Private workflow
 
-With either verified v1 ZIP and the private integration tools already available:
+With either verified v1 ZIP:
 
 1. Launch the builder AppImage.
 2. Use **Browse** to choose the verified game ZIP and an empty output folder.
    The path fields remain editable if the host file picker is unavailable.
 3. Choose the game's starting resolution. 1280×720 fullscreen is the
    recommended default; other supported modes are listed in the selector.
+   If you have already launched an earlier build, its saved resolution remains
+   in your XDG game data and takes precedence over the new build's default.
+   Launch the game once with `--720p` or `--deck` to change that saved choice.
 4. Click **Build AppImage**. A green **BUILD COMPLETE** message shows the
    output path; errors appear in red.
 5. Launch the generated game AppImage separately; the builder never starts it.
@@ -78,11 +85,12 @@ hp1-builder build --zip "/path/to/game.zip" \
 hp1-builder check
 ```
 
-For the private integration route, `build` also needs these local inputs:
-`HP1_INNOEXTRACT`, `HP1_PRIVATE_REFERENCE_APPDIR`, `HP1_APPIMAGETOOL`, and
-`HP1_APPIMAGE_RUNTIME`; `HP1_PACKAGER_PATH` is optional when the packager
-needs an isolated utility path. The builder rejects absent or mismatched
-private runtime inputs rather than falling back to a system installation.
+The packaged builder supplies its non-Wine tools itself. Source-tree CLI
+builds need `HP1_INNOEXTRACT` and `HP1_APPIMAGE_RUNTIME` pointed at the
+audited packaging tools. The packager is downloaded and hash-verified. The optional
+`HP1_PRIVATE_REFERENCE_APPDIR` is a development-only override and is not set
+by the online builder AppImage. `HP1_COMPONENT_CACHE` can select a private
+component cache for testing. Output paths must be absolute.
 
 ## Implemented private behaviour
 
@@ -94,17 +102,25 @@ private tests on Bazzite and Steam Deck. A user confirmed gameplay, audio,
 and working controls in both Steam Deck Desktop and Gaming Modes. The new
 backup button has automated tests but still needs hands-on Deck validation.
 
-The future AppImage should support `--appimage-extract-and-run` for systems
-without FUSE. No statement is made yet about distribution, GPU support,
-Steam Deck, or any other Linux distribution.
+The current private game AppImage works on tested x86_64 Bazzite and Steam
+Deck systems. Other Linux distributions are untested. At 1280×800, title and
+loading screens can show lines, and the Direct3D picker returned on repeated
+Steam Deck launches. That picker blocks an unattended Gaming Mode launch at
+this resolution. Two Deck launches at 1280×720 skipped it and had sound.
+The generated game AppImage is for personal use and must not be uploaded.
+Public builder publication is conditional on GUI checks and third-party
+licence notices.
 
 ## Known beta limitations
 
 - At 1280×800, thin lines can appear on title/loading screens on both Bazzite
-  and Steam Deck. Dumbledore’s glasses can show a thick shadow at that profile;
-  Harry’s glasses look normal. The user reports these as non-game-breaking.
-  The 720p and ultrawide profiles have not shown the same glasses defect in
-  their reported tests. The cause is not yet isolated.
+  and Steam Deck. The Direct3D picker also recurred at this resolution on Deck;
+  1280×720 skipped it twice. Dumbledore’s glasses can show a thick shadow at
+  1280×800 and intermittently at 1280×720, while Harry’s glasses look normal.
+  The user reports the visual defects as non-game-breaking. The picker is
+  different: Gaming Mode cannot proceed past it without changing launch
+  resolution or manually interacting in Desktop Mode. The root cause remains
+  under investigation.
 - Steam’s standard WASD-and-mouse layout sends WASD from the Deck’s left stick,
   but this game currently assigns movement to the keyboard arrow keys instead.
   For the game’s non-Steam shortcut, map the left stick directions to the four

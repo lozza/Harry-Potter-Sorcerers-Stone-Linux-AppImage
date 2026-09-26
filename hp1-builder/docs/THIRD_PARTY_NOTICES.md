@@ -1,5 +1,17 @@
 # Third-party notices and release gate
 
+## Current online-builder scope
+
+The new small builder AppImage does **not** bundle Wine, DXVK, the 32-bit
+Flatpak compatibility runtime, a GPU driver, or commercial game files. It
+downloads pinned free components for a user's private game build, verifying
+their recorded SHA-256 hashes. The generated game AppImage remains private
+and must not be uploaded to this repository. The historical M30 copied-runner
+audit below applies to the older **offline private package**, not this online
+builder. A public online-builder binary still needs a final inventory of what
+it itself bundles: the GPLv3/Slint GUI and linked Rust crates, innoextract,
+unzip, file/magic, and the AppImage type-2 runtime.
+
 ## Private M30 package audit (not public-release clearance)
 
 - The private M30 builder AppDir contains a copied Soda/Wine runner (~489 MB), a Freedesktop-derived 32-bit userspace runtime (~294 MB), a DXVK prefix template (~12 MB), the SDK-built GUI, and packaging/extraction tools. Its generated game AppImage contains commercial game data; neither AppImage may be uploaded as a GitHub release on the strength of private tests.

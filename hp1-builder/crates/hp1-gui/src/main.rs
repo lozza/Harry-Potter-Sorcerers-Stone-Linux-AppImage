@@ -63,6 +63,9 @@ fn main() -> Result<(), slint::PlatformError> {
                 sink.note("Could not create hp1-builder.log in the output folder.");
             }
             sink.note(&format!("Selected game display profile: {}", default_profile.id()));
+            if default_profile == DisplayProfile::SteamDeck {
+                sink.note("Warning: 1280x800 is experimental on Steam Deck; a recurring Direct3D picker can block Gaming Mode. The verified workaround is 1280x720.");
+            }
             let profiles_dir = std::env::var_os("HP1_PROFILES_DIR")
                 .map(PathBuf::from).unwrap_or_else(|| PathBuf::from("profiles"));
             let artifact_path = output_path.join("Harry-Potter-Sorcerers-Stone-private.AppImage");
@@ -232,6 +235,8 @@ impl EventSink for GuiSink {
         let progress = match (event.stage, event.kind) {
             (BuildStage::ValidateArguments, "completed") => 0.05,
             (BuildStage::IdentifyEdition, "completed") => 0.15,
+            (BuildStage::DownloadComponents, "started") => 0.17,
+            (BuildStage::DownloadComponents, "completed") => 0.28,
             (BuildStage::ExtractInstaller, "completed") => 0.42,
             (BuildStage::PreparePayload, "completed") => 0.70,
             (BuildStage::AssembleAppDir, "completed") => 0.78,
