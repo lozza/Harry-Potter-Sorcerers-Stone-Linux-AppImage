@@ -6,6 +6,10 @@ The original Windows game runs inside the AppImage using bundled compatibility s
 
 **[Download the latest v2 beta builder](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1)** — under **Assets**, choose `hp1-m46-online-builder-beta.AppImage`. A `.sha256` file is provided to check the download.
 
+## Why this builder exists
+
+Harry Potter and the Sorcerer's Stone was made for Windows and never had an official Linux release. Getting it running on Linux can mean piecing together Wine, graphics and sound fixes, a suitable resolution and a place for saves. This builder brings those steps together: give it one of the verified MagiPack ZIPs below and it makes a game AppImage for your own copy. You do not have to set up Bottles or system Wine yourself.
+
 ## The MagiPack ZIP required
 
 This beta accepts **only two verified English ZIPs containing the MagiPack Repack v3 installer**:
