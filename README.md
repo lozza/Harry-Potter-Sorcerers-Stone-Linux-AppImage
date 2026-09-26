@@ -23,10 +23,16 @@ The builder download contains **no game files**. You supply the supported ZIP lo
 
 ## Build the game AppImage
 
-1. Download the builder, make its AppImage executable and open it in Desktop Mode.
+### Linux desktop
+
+1. Download the builder, mark its AppImage as executable in your file manager (usually under **Properties → Permissions**), then open it.
 2. Select the supported MagiPack ZIP and an output folder with **Browse**.
-3. Choose a resolution. **1280×720 is recommended for Steam Deck.**
-4. Click **Build AppImage**. Follow the progress until **BUILD COMPLETE** appears, then open the finished game AppImage from the output folder.
+3. Choose a resolution, then click **Build AppImage**.
+4. Wait for **BUILD COMPLETE**, then open the finished game AppImage from the output folder.
+
+### Steam Deck
+
+Switch to **Desktop Mode** and follow the same build steps. Choose **1280×720** for the tested Deck setup; 1280×800 is experimental. To play in Gaming Mode, right-click the finished game AppImage in Dolphin and choose **Add to Steam**. In Steam Input, map the left stick to the **arrow keys**—the default WASD mapping will not move Harry.
 
 **An internet connection is required for the first build.** The tool downloads free compatibility components, verifies their hashes and caches them for later builds. Expect about 95 MB of downloads, plus roughly 130 MB if the required 32-bit Flatpak runtime is not installed. The game ZIP stays local throughout.
 
@@ -39,8 +45,6 @@ The builder download contains **no game files**. You supply the supported ZIP lo
 - This exact public builder AppImage has opened on Bazzite. A complete Deck build with this notice-only repack has not yet been repeated. Other Linux distributions are untested.
 
 Saves and settings live outside the game AppImage, normally at `${XDG_DATA_HOME:-$HOME/.local/share}/hp1-magipack-private/`. Rebuilding can therefore pick up existing saves. A resolution changed at game launch is also remembered there and can take precedence over a later build's default.
-
-For Steam Deck controls, map the **left stick to the arrow keys** in the game's Steam Input layout. The default WASD mapping does not move Harry in this setup.
 
 ## Known beta issues
 
