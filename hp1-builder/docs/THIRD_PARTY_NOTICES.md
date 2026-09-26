@@ -8,9 +8,7 @@ downloads pinned free components for a user's private game build, verifying
 their recorded SHA-256 hashes. The generated game AppImage remains private
 and must not be uploaded to this repository. The historical M30 copied-runner
 audit below applies to the older **offline private package**, not this online
-builder. A public online-builder binary still needs a final inventory of what
-it itself bundles: the GPLv3/Slint GUI and linked Rust crates, innoextract,
-unzip, file/magic, and the AppImage type-2 runtime.
+builder. The public `v2.0.0-beta.1` builder AppImage includes notices for the GPLv3/Slint GUI, its linked Rust crates, innoextract, unzip, file/magic and the AppImage type-2 runtime. The generated game AppImage remains private. This document's older M30 audit below is historical and does not describe the public online builder.
 
 ## Private M30 package audit (not public-release clearance)
 
@@ -56,20 +54,16 @@ omits that top-level notice, and the archive has no `COPYING.LIB` entry.
 - The packaged `appimagetool.AppImage` matches the official [AppImage appimagetool continuous release](https://github.com/AppImage/appimagetool/releases/tag/continuous) at commit `8c8c91f762b412a19f4e8d2c4b35afb98f2d7c81`, SHA-256 `a6d71e2b6cd66f8e8d16c37ad164658985e0cf5fcaa950c90a482890cb9d13e0`. The separately packaged AppImage runtime is exactly the first 944,632 bytes of that official AppImage, SHA-256 `4448aff037fa32788d2fb8ac9a10bd9688cd95ffcebbda05d1962278d0fa8c47`; it reports [type2-runtime source commit](https://github.com/AppImage/type2-runtime/commit/caf24f9f712084686bfc24a70b75e50df0aefb9c).
 - Packaged innoextract's wrapper and amd64 binary match the local official 1.9 archive, and the required innoextract/Boost/compression/C++ runtime licence files are present. Tool identification does not resolve the separate Wine corresponding-source problem.
 
-## Current source-only dependencies
+## Historical M30 source-only dependency checkpoint (superseded for online beta)
 
 | Component | Version | Source | Licence/release status | Purpose |
 | --- | --- | --- | --- | --- |
 | Rust | 2021 edition source; test compiler 1.98.1 | https://www.rust-lang.org/ | Toolchain is not distributed by this project | Core and CLI |
-| Slint | pinned `1.13.1` | https://github.com/slint-ui/slint | Must be reviewed against the selected distribution licence before release | Native GUI |
+| Slint | pinned `1.13.1` | https://github.com/slint-ui/slint | GPLv3 route selected for the public beta | Native GUI |
 
-No third-party component is cleared for a distributable builder or game
-AppImage. The private integration artifact currently copies a locally audited
-runner/runtime and the verified DXVK `dxgi.dll`/`d3d11.dll`, and uses local
-innoextract and AppImage tooling; it is not a release artifact. Cargo's
-development cache and temporary Rust toolchain are not release artifacts.
+The preceding no-binary-clearance statement applied to the historical M30 offline package, not the public online beta. A generated game AppImage still contains commercial files and must remain private. Cargo's development cache and temporary Rust toolchain are not release artifacts.
 
-## Components that must be cleared before bundling
+## Historical M30 components that required clearance before bundling
 
 - ZIP/Inno extraction tooling and its licences.
 - AppImage runtime and SquashFS packaging tooling.
