@@ -1,4 +1,4 @@
-# Harry Potter 1 on Linux
+# Harry Potter and the Sorcerer's Stone on Linux
 
 I've put the new ZIP-to-AppImage builder up as a **public beta**. Give it one of the two supported MagiPack ZIP layouts, choose a resolution, and it builds a private game AppImage on your own computer. No Bottles setup or system Wine installation is needed.
 
