@@ -25,6 +25,8 @@ The builder download contains **no game files**. You supply the supported ZIP lo
 
 ## Build the game AppImage
 
+**An internet connection is required for the first build.** The tool downloads free compatibility components, verifies their hashes and caches them for later builds. Expect about 95 MB of downloads, plus roughly 130 MB if the required 32-bit Flatpak runtime is not installed. The game ZIP stays local throughout.
+
 ### Linux desktop
 
 1. Download the builder, mark its AppImage as executable in your file manager (usually under **Properties → Permissions**), then open it.
@@ -34,9 +36,13 @@ The builder download contains **no game files**. You supply the supported ZIP lo
 
 ### Steam Deck
 
-Switch to **Desktop Mode** and follow the same build steps. Choose **1280×720** for the tested Deck setup; 1280×800 is experimental. To play in Gaming Mode, right-click the finished game AppImage in Dolphin and choose **Add to Steam**. In Steam Input, map the left stick to the **arrow keys**—the default WASD mapping will not move Harry.
+Switch to **Desktop Mode** and follow the same build steps. Choose **1280×720** for the tested Deck setup; 1280×800 is experimental. To play in Gaming Mode, right-click the finished game AppImage in Dolphin and choose **Add to Steam**.
 
-**An internet connection is required for the first build.** The tool downloads free compatibility components, verifies their hashes and caches them for later builds. Expect about 95 MB of downloads, plus roughly 130 MB if the required 32-bit Flatpak runtime is not installed. The game ZIP stays local throughout.
+### Steam Deck controls
+
+In Gaming Mode, open the game's **Steam Input** settings and choose the **Keyboard (WASD) and Mouse** profile. Then map the **left stick to the arrow keys**—the game uses arrow keys for movement, so leaving that stick on WASD will not move Harry.
+
+### Backups and logs
 
 **Back up saves & settings** copies save slots and settings to a new backup folder without overwriting an older backup. Close the game first, then choose the backup destination. The builder also writes `hp1-builder.log` in the output folder if a build needs diagnosing.
 
