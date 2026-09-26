@@ -1,10 +1,19 @@
 # Harry Potter and the Sorcerer's Stone on Linux
 
-I've put the new ZIP-to-AppImage builder up as a **public beta**. Give it one of the two supported MagiPack ZIP layouts, choose a resolution, and it builds a private game AppImage on your own computer. No Bottles setup or system Wine installation is needed.
+I've made a tool app that turns a supported copy of **Harry Potter and the Sorcerer's Stone** into a Linux AppImage. Give it the right game ZIP, choose a resolution, and it builds an app you can launch directly on Linux—no Bottles setup or system Wine installation. The original game still runs through bundled compatibility software; this is not a rewrite into native Linux code. The builder is now a **public beta**.
 
 **[Download the v2.0.0 beta builder](https://github.com/lozza/Harry-Potter-Sorcerers-Stone-Linux-AppImage/releases/tag/v2.0.0-beta.1)** — grab the `hp1-m46-online-builder-beta.AppImage` file under **Assets**. The `.sha256` file beside it is there if you want to check the download.
 
-This is an unofficial fan project, not connected to Warner Bros., EA or the original developers. The download is **only the builder**. It doesn't contain the game, a game download, or a finished game AppImage. You supply your own supported ZIP; it stays on your computer and is never uploaded.
+## The game ZIP you need
+
+For this beta, the builder accepts **only these two verified English ZIP archives**. They contain the same MagiPack Repack v3 installer; one ZIP has an extra parent folder and the other doesn't:
+
+- `Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN.zip` — installer files inside a parent folder.
+- `Harry-Potter-and-the-Sorcerer-s-Stone_Win_EN_Repack.zip` — installer files at the top of the ZIP.
+
+The builder checks the ZIP's exact contents, size and SHA-256—not just its filename. Another archive with a similar name won't work. **ISOs, loose installed game folders and other repacks aren't supported.** You don't need to supply a separate no-CD or compatibility file. I don't provide the ZIP or link to a place to get it; you bring your own local copy.
+
+This is an unofficial fan project, not connected to Warner Bros., EA or the original developers. The download is **only the builder**. It contains no game files, and your ZIP stays on your computer—it is never uploaded.
 
 ## Build your game AppImage
 
@@ -13,7 +22,7 @@ This is an unofficial fan project, not connected to Warner Bros., EA or the orig
 3. Pick a resolution. If you're on a Steam Deck, start with **1280×720**.
 4. Click **Build AppImage**. You'll see progress and a clear **BUILD COMPLETE** message when it's ready. Open the finished game AppImage from your output folder.
 
-**You need an internet connection for the first build.** The builder downloads the free tools it needs, checks their hashes and keeps them for later builds. Expect about 95 MB of downloads, plus roughly 130 MB if the required 32-bit Flatpak runtime isn't already installed. It never downloads the game. Both ZIP layouts I've verified are supported: one puts the installer files inside a parent folder; the other has them at the ZIP's top level.
+**You need an internet connection for the first build.** The builder downloads the free tools it needs, checks their hashes and keeps them for later builds. Expect about 95 MB of downloads, plus roughly 130 MB if the required 32-bit Flatpak runtime isn't already installed. It never downloads the game.
 
 There's also a **Back up saves & settings** button. Close the game before using it, choose where the backup should go, and the builder will copy your saves and settings into a new backup folder without overwriting an older one.
 
