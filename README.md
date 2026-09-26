@@ -8,7 +8,7 @@ The original Windows game runs inside the AppImage using bundled compatibility s
 
 ## Why this builder exists
 
-Harry Potter and the Sorcerer's Stone was made for Windows and never had an official Linux release. Getting it running on Linux can mean piecing together Wine, graphics and sound fixes, a suitable resolution and a place for saves. This builder brings those steps together: give it one of the verified MagiPack ZIPs below and it makes a game AppImage for your own copy. You do not have to set up Bottles or system Wine yourself.
+Harry Potter and the Sorcerer's Stone was made for a much older version of Windows and never had an official Linux release. Getting it running on Linux can mean piecing together Wine, graphics and sound fixes, a suitable resolution and a place for saves. This builder brings those steps together: give it one of the verified MagiPack ZIPs below and it makes a game AppImage for your own copy. You do not have to set up Bottles or system Wine yourself.
 
 ## The MagiPack ZIP required
 
