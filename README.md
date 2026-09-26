@@ -17,6 +17,8 @@ This beta accepts **only two verified English ZIPs containing the MagiPack Repac
 - `Harry_Potter_and_the_Philosophers_Stone_MagiPack_Repack_Win_Setup_EN.zip` — the installer sits inside a parent folder.
 - `Harry-Potter-and-the-Sorcerer-s-Stone_Win_EN_Repack.zip` — the installer files sit at the ZIP's top level.
 
+Looking for the ZIP? [My Abandonware](https://www.myabandonware.com/) and [Old Games Download](https://oldgamesdownload.com/) both list the MagiPack repack. They are independent of this project; please make sure you're allowed to download and use the game. The builder only accepts the two verified ZIP versions named above.
+
 The ZIP is checked by its contents, size and SHA-256, not just its filename. A different archive with a similar name will be rejected. **ISOs, installed game folders and other repacks are not supported.** No separate no-CD or compatibility file is needed.
 
 The builder download contains **no game files**. You supply the supported ZIP locally; it is never uploaded or downloaded by the tool. This is an unofficial fan project, not connected to Warner Bros., EA or the original developers.
